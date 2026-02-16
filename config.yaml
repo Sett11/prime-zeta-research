@@ -1,0 +1,89 @@
+# Prime Zeta Research Experiment Configuration
+# Edit this file to customize experiment parameters
+
+experiment:
+  # Maximum number for prime generation (must match stages 0 and 1)
+  max_n: 13000000000 # 13B
+
+  # Window parameter C (W(p) = C * ln(p))
+  # Typical values: 10.0, e (2.718), 5.0, 20.0
+  c_value: 2.718281828459045
+
+  # Maximum number of points for resampling before FFT
+  max_resample_points: 400000000
+
+  # Path to zeta function zeros file (gamma_k); 4.17M zeros for extended analysis
+  gamma_k_file: data/gamma_k_5000000.txt
+
+database:
+  # Database engine: "sqlite" or "postgres"
+  engine: "postgres"
+
+  # For SQLite: path to database file
+  path: research.db
+
+  # PostgreSQL connection parameters (used when engine = "postgres")
+  postgres:
+    host: "localhost"
+    port: 5432
+    user: "prime_zeta"
+    password: "prime_zeta"
+    db: "prime_zeta"
+
+  tables:
+    # Table name for primes
+    primes: "primes"
+    # Table name for computations (Need, CN, Li, R)
+    need_cn: "need_cn_data"
+    # Table name for experiments
+    experiments: "experiments"
+
+analysis:
+  # FFT parameters
+  fft:
+    percentile_threshold: 90.0
+    peak_distance: 10
+    window_function: "hann"
+
+  # Resampling parameters
+  resampling:
+    method: "log_uniform"  # uniform or log_uniform
+
+  # Wavelet analysis parameters
+  wavelet:
+    enabled: true  # Enable wavelet analysis
+    max_points: 1000000  # Maximum number of points
+    num_scales: 100  # Number of scales for CWT
+    wavelet: "cmor1.5-1.0"  # Complex Morlet wavelet
+    scale_range: null  # null = auto calculation based on zero frequencies (~2-6444 for 50000 zeros), [min, max] = manual range
+    percentile_threshold: 90.0  # Percentile for peak detection
+    # Scalogram parameters (wavelet spectrogram)
+    scalogram_enabled: true  # Automatically build and save scalogram when running stage 2
+    scalogram_max_freq: null  # Maximum frequency for display (null = full range, e.g. 900.0)
+    scalogram_filename: "scalogram.png"  # Filename for saving scalogram in results directory
+
+output:
+  # Output format
+  format: "json+png"  # json, png, json+png
+
+  # Results directory
+  directory: "data"
+
+# Stage 4: detection and validation of zero candidates from R(p) spectrum
+discovery:
+  # Frequency range for peak candidates (null = auto from gamma_k: f_1, f_last + margin)
+  f_min: null
+  f_max: null
+  # Threshold |zeta(1/2 + i*gamma)| for validated status
+  validate_tolerance: 1.0e-6
+  # Matching threshold with known zeros: ratio of gamma (0.01 = 1%)
+  known_match_tolerance_ratio: 0.01
+  # Candidate limit for validation (null = all). Reduce for quick test (mpmath is slow for large gamma)
+  validate_limit: null
+
+logging:
+  # Logging level: DEBUG, INFO, WARNING, ERROR
+  level: "DEBUG"
+
+  # Log file path
+  file: "research.log"

@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: prime-zeta-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: prime_zeta
+      POSTGRES_USER: prime_zeta
+      POSTGRES_PASSWORD: prime_zeta
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_prime_zeta:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U prime_zeta -d prime_zeta"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata_prime_zeta:
+

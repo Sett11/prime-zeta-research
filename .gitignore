@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+.eggs/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Build / distribution
+build/
+dist/
+*.whl
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDE
+.cursor/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and databases
+*.log
+research.db
+
+# Project data
+data/primes/*.npy
+data/need_cn/
+data/R_dynamics/
+data/result/
+data/dataset_sources/
+results/
+tmp/
+
+# OS
+.DS_Store
+Thumbs.db
